@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+
 const db = new sqlite3.Database('./users.db', (err) => {
   if (err) {
     console.error(err.message);
@@ -40,6 +41,7 @@ app.post("/register", (req, res) => {
       return res.status(500).json({ message: "Lỗi phía máy chủ." });
     }
     res.json({ message: "Đăng ký thành công! Hãy quay lại đăng nhập." });
+
   });
 });
 
@@ -74,7 +76,7 @@ app.get("/api/users", (req, res) => {
   });
 });
 app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "home.html"));
+  res.sendFile(path.join(__dirname, "home.html"));
 });
 
 app.listen(port, () => console.log(`Server chạy tại http://localhost:${port}`));
