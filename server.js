@@ -32,7 +32,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 
 // 1. Trang chủ (login) -> Bỏ chữ "public"
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // 2. Thêm route cho trang register.html (Vì <a href="/register.html">)
@@ -42,7 +42,7 @@ app.get("/register.html", (req, res) => {
 
 // 3. Thêm route cho trang home.html (JS chuyển hướng tới "/home")
 app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "home.html"));
 });
 
 
