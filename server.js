@@ -7,9 +7,6 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-// DÒNG NÀY ĐÃ BỊ XÓA (vì chúng ta không còn thư mục "public" nữa)
-// app.use(express.static(path.join(__dirname, "public")));
-
 const db = new sqlite3.Database('./users.db', (err) => {
   if (err) {
     console.error(err.message);
@@ -27,26 +24,19 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
   }
 });
 
-
-// --- CẬP NHẬT CÁC ĐƯỜNG DẪN FILE ---
-
-// 1. Trang chủ (login) -> Bỏ chữ "public"
+// --- CHỈ CẦN 1 ROUTE GET DUY NHẤT ---
+// Bất kể người dùng truy cập route nào (/), server cũng trả về file index.html
+// Trình duyệt (JavaScript) sẽ tự quyết định hiện trang nào (login, home, v.v.)
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// 2. Thêm route cho trang register.html (Vì <a href="/register.html">)
-app.get("/register.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "register.html"));
-});
-
-// 3. Thêm route cho trang home.html (JS chuyển hướng tới "/home")
-app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "home.html"));
-});
+// XÓA app.get("/register.html") - Không cần nữa
+// XÓA app.get("/home") - Không cần nữa
 
 
-// --- CÁC API (POST) VÀ LOGIC CSDL KHÔNG THAY ĐỔI ---
+// --- CÁC API (POST/GET) VẪN GIỮ NGUYÊN ---
+// JavaScript vẫn cần các API này để hoạt động
 
 app.post("/register", (req, res) => {
   const { username, password } = req.body;
@@ -60,7 +50,7 @@ app.post("/register", (req, res) => {
       console.error(err.message);
       return res.status(500).json({ message: "Lỗi phía máy chủ." });
     }
-    res.json({ message: "Đăng ký thành công! Hãy quay lại đăng nhập." });
+    res.json({ message: "Đăng ký thành công! Sẽ chuyển về trang đăng nhập." });
   });
 });
 
@@ -80,7 +70,6 @@ app.post("/login", (req, res) => {
   });
 });
 
-// API lấy danh sách user (Nếu bạn có dùng)
 app.get("/api/users", (req, res) => {
   const sql = `SELECT username FROM users ORDER BY username`;
   db.all(sql, [], (err, rows) => {
