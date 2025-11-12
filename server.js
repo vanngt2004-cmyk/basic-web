@@ -42,7 +42,7 @@ app.get("/register.html", (req, res) => {
 
 // 3. Thêm route cho trang home.html (JS chuyển hướng tới "/home")
 app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "home.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 
