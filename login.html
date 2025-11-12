@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng nhập</title>
+</head>
+<body>
+  <h1>Trang Đăng nhập</h1>
+  <input id="loginUser" placeholder="Tên đăng nhập"><br>
+  <input id="loginPass" type="password" placeholder="Mật khẩu"><br>
+  <button id="btnLogin">Đăng nhập</button>
+  <p id="output"></p>
+  <p>Chưa có tài khoản? <a href="/register.html">Đăng ký ngay</a></p>
+
+  <script>
+    document.getElementById("btnLogin").addEventListener("click", async () => {
+      const username = document.getElementById("loginUser").value;
+      const password = document.getElementById("loginPass").value;
+
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("username", data.username);
+        window.location.href = "/home";
+      } else {
+        document.getElementById("output").textContent = data.message;
+      }
+    });
+  </script>
+</body>
+</html>
+
