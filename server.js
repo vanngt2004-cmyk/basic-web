@@ -6,8 +6,6 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
-
 const db = new sqlite3.Database('./users.db', (err) => {
   if (err) {
     console.error(err.message);
@@ -25,7 +23,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
+  res.sendFile(path.join(__dirname, "login.html"));
 });
 
 app.post("/register", (req, res) => {
